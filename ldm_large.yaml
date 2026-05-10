@@ -1,0 +1,47 @@
+# Latent Diffusion Model Config — Large Scale
+# Run: accelerate launch --num_processes 4 scripts/train_distributed.py --config configs/ldm_large.yaml
+
+experiment_name: "ldm-large"
+run_name: "ldm-256px-class-cond"
+
+# ── Dataset ──
+dataset: custom
+data_root: data/custom_dataset
+image_size: 256
+in_channels: 3
+num_classes: 1000
+latent_channels: 4
+
+# ── Model ──
+model_size: large
+num_timesteps: 1000
+beta_schedule: cosine
+use_vae: true
+vae_checkpoint: outputs/vae/best_model.pt
+
+# ── Training ──
+num_epochs: 200
+batch_size: 32
+learning_rate: 1.0e-4
+weight_decay: 1.0e-4
+warmup_steps: 2000
+grad_accumulation: 4
+mixed_precision: bf16
+ema_decay: 0.9999
+
+# ── Logging & Checkpointing ──
+log_every: 50
+save_every: 5
+output_dir: outputs/ldm_large
+use_wandb: true
+wandb_project: genai-simulation-engine
+log_with: all  # tensorboard + wandb
+
+# ── Inference ──
+num_inference_steps: 200
+guidance_scale: 7.5
+
+# ── Hardware (4× A100 80GB) ──
+device: cuda
+num_workers: 8
+use_accelerate: true

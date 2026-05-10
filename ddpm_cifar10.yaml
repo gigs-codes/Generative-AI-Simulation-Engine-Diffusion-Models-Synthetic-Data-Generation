@@ -1,0 +1,43 @@
+# DDPM Training Config — CIFAR-10
+# Run: python scripts/train.py --config configs/ddpm_cifar10.yaml
+
+experiment_name: "ddpm-cifar10"
+run_name: "ddpm-cifar10-cosine"
+
+# ── Dataset ──
+dataset: cifar10
+data_root: data/cifar10
+image_size: 32
+in_channels: 3
+num_classes: 10
+
+# ── Model ──
+model_size: base          # small | base | large
+num_timesteps: 1000
+beta_schedule: cosine     # linear | cosine | sqrt_linear
+
+# ── Training ──
+num_epochs: 100
+batch_size: 128
+learning_rate: 2.0e-4
+weight_decay: 1.0e-4
+warmup_steps: 500
+grad_accumulation: 1
+mixed_precision: fp16     # no | fp16 | bf16
+ema_decay: 0.9999
+
+# ── Logging & Checkpointing ──
+log_every: 100
+save_every: 10
+output_dir: outputs/ddpm_cifar10
+use_wandb: false
+wandb_project: genai-simulation-engine
+log_with: tensorboard
+
+# ── Inference ──
+num_inference_steps: 50
+guidance_scale: 1.0
+
+# ── Hardware ──
+device: cuda
+num_workers: 4

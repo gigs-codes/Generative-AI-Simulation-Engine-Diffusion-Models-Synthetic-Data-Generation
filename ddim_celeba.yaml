@@ -1,0 +1,43 @@
+# DDIM Config — CelebA Face Generation
+# Run: python scripts/train.py --config configs/ddim_celeba.yaml
+
+experiment_name: "ddim-celeba"
+run_name: "ddim-celeba-64px"
+
+# ── Dataset ──
+dataset: celeba
+data_root: data/celeba
+image_size: 64
+in_channels: 3
+num_classes: 0  # unconditional
+
+# ── Model ──
+model_size: base
+num_timesteps: 1000
+beta_schedule: cosine
+sampler: ddim
+
+# ── Training ──
+num_epochs: 150
+batch_size: 64
+learning_rate: 1.5e-4
+weight_decay: 1.0e-4
+warmup_steps: 1000
+grad_accumulation: 2
+mixed_precision: fp16
+ema_decay: 0.9999
+
+# ── Logging ──
+log_every: 200
+save_every: 10
+output_dir: outputs/ddim_celeba
+use_wandb: false
+log_with: tensorboard
+
+# ── Inference ──
+num_inference_steps: 50
+eta: 0.0  # fully deterministic DDIM
+
+# ── Hardware ──
+device: cuda
+num_workers: 4
